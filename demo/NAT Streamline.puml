@@ -1,0 +1,29 @@
+@startuml
+title NAT 穿透通信流程图（UDP打洞）
+
+participant ClientA
+participant Server
+participant ClientB
+
+== 注册阶段 ==
+ClientA -> Server : REGISTER:A
+Server -> ClientA : OK
+
+ClientB -> Server : REGISTER:B
+Server -> ClientB : OK
+
+== 获取对方地址 ==
+ClientA -> Server : GETPEER:B
+Server -> ClientA : PEER: B_IP:B_PORT
+
+ClientB -> Server : GETPEER:A
+Server -> ClientB : PEER: A_IP:A_PORT
+
+== 打洞阶段 ==
+ClientA -> ClientB : UDP Punch (尝试发送)
+ClientB -> ClientA : UDP Punch (尝试发送)
+
+== 建立通信 ==
+ClientA <-> ClientB : 开始点对点通信
+
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+title 点对点通信时序图 (UDP NAT Traversal)
+
+actor ClientA
+actor ClientB
+participant Server
+
+== 第一步：注册 ==
+ClientA -> Server: REGISTER:A
+Server --> ClientA: ACK
+ClientB -> Server: REGISTER:B
+Server --> ClientB: ACK
+
+== 第二步：获取对方地址 ==
+ClientA -> Server: GETPEER:B
+Server --> ClientA: B_IP:B_PORT
+ClientB -> Server: GETPEER:A
+Server --> ClientB: A_IP:A_PORT
+
+== 第三步：UDP打洞 ==
+ClientA -> ClientB: UDP包 (打洞)
+ClientB -> ClientA: UDP包 (打洞)
+
+== 第四步：通信建立 ==
+ClientA -> ClientB: 消息传输
+ClientB -> ClientA: 回复消息
+
+@enduml
